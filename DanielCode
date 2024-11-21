@@ -1,0 +1,72 @@
+import sqlite3
+import pandas as pd
+# Correct file path according to the user's latest input
+file_path = "data/Hospitalization_HHS Region_2023-24.xlsx"
+# Load the Excel file to check its content and prepare it for database insertion
+data = pd.read_excel((correct_file_path))
+# Display the first few rows of the dataframe to understand its structure
+data.head()
+# Load the data from the newly specified file
+file_path = "StateDatabyWeekforMap_2023-24week1-17.csv"
+data = pd.read_csv(file_path)
+# Display the column names to confirm we have the right ones
+print("Column names:", data.columns.tolist())
+# Display the first few rows to understand the data
+print("First few rows of the data:")
+print(data.head())
+import pandas as pd
+# Load the data from the CSV file
+file_path = 'StateDatabyWeekforMap_2023-24week1-17.csv'
+data = pd.read_csv(file_path)
+# Print the column names to ensure we're using the correct one for states
+print("Column names in the DataFrame:", data.columns.tolist())
+# Display the first few rows of the DataFrame for a better understanding of the data structure
+print("First few rows of the DataFrame:")
+print(data.head())
+file_path = 'StateDatabyWeekforMap_2023-24week1-17.csv'
+data = pd.read_csv(file_path)
+# Define the list of southernmost states from California to Florida
+southern_states = ['California', 'Arizona', 'New Mexico', 'Texas', 'Louisiana', 'Mississippi', 'Alabama', 'Georgia', 'Florida']
+# Filter the DataFrame to include only the rows for the southernmost states using the correct column name "STATENAME"
+filtered_data = data[data['STATENAME'].isin(southern_states)]
+# Display the first few rows of the filtered data to verify
+print("Filtered data:")
+print(filtered_data.head())
+# Optionally, save the filtered DataFrame to a new CSV file
+filtered_data.to_csv("Filtered_Flu_Season_Southern_States.csv", index=False)
+# Confirmation message
+print("Filtered data saved successfully!")
+import pandas as pd
+import folium
+# Load the data from the CSV file
+file_path = 'StateDatabyWeekforMap_2023-24week1-17.csv'
+data = pd.read_csv(file_path)
+# Define the list of southernmost states from California to Florida
+southern_states = ['California', 'Arizona', 'New Mexico', 'Texas', 'Louisiana', 'Mississippi', 'Alabama', 'Georgia', 'Florida']
+# Filter the DataFrame to include only the rows for the southernmost states using the correct column name "STATENAME"
+filtered_data = data[data['STATENAME'].isin(southern_states)]
+# Coordinates for each state
+coords = {
+    'California': (36.7783, -119.4179),
+    'Arizona': (34.0489, -111.0937),
+    'New Mexico': (34.5199, -105.8701),
+    'Texas': (31.9686, -99.9018),
+    'Louisiana': (30.9843, -91.9623),
+    'Mississippi': (32.3547, -89.3985),
+    'Alabama': (32.3182, -86.9023),
+    'Georgia': (32.1656, -82.9001),
+    'Florida': (27.9944, -81.7603)
+}
+# Create a base map
+m = folium.Map(location=[34.0, -81.0], zoom_start=5)
+# Iterate through the filtered DataFrame to add markers
+for index, row in filtered_data.iterrows():
+    state = row['STATENAME']
+    if state in coords:
+        folium.Marker(
+            location=coords[state],
+            popup=f"<a href='{row['URL']}' target='_blank'>{state} Flu Info</a>",
+            tooltip=state
+        ).add_to(m)
+# Display the map
+m
